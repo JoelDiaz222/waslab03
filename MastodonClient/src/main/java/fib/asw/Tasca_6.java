@@ -186,8 +186,7 @@ public class Tasca_6 {
 
                     final String createdAtRaw = tut.getString("created_at");
                     final OffsetDateTime dateTime = OffsetDateTime.parse(createdAtRaw);
-                    final String formattedDate = dateTime.atZoneSameInstant(ZoneId.of("Europe/Madrid"))
-                            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                    final String formattedDate = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
                     html.append("<p class='timestamp'>")
                             .append(isReblog ? "🔁 Retut - " : "")
