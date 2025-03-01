@@ -142,10 +142,14 @@ public class Tasca_6 {
 
                 //  Extraiem els camps del tut en JSON obtingut
                 final String id = account.getString("id");
-                final String displayName = account.optString("display_name", account.getString("username"));
-                final String username = account.getString("acct");
                 final String avatar = account.getString("avatar");
                 final int followersCount = account.getInt("followers_count");
+                String displayName = account.optString("display_name", account.getString("username"));
+                String username = account.getString("acct");
+
+                //  En cas d'haver-hi emojis, els hem de canviar per la imatge corresponent
+                final JSONArray emojis = account.optJSONArray("emojis");
+                if (!emojis.isEmpty()) displayName = replaceEmojis(displayName, emojis);
 
                 html.append("<div class='account'>\n");
                 html.append("<h2><img src='")
@@ -219,5 +223,23 @@ public class Tasca_6 {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public static String replaceEmojis(String text, JSONArray emojis) {
+        if (text == null || emojis == null) return text;
+
+        for (int i = 0; i < emojis.length(); i++) {
+            final JSONObject emoji = emojis.getJSONObject(i);
+            final String shortcode = emoji.getString("shortcode");
+            final String pattern = ":" + shortcode + ":";
+
+            if (text.contains(pattern)) {
+                final String imgTag = "<img src=\"" + emoji.getString("static_url") + "\" alt=\":"
+                        + shortcode + ":\" class=\"emoji\">";
+                text = text.replace(pattern, imgTag);
+            }
+        }
+
+        return text;
     }
 }
