@@ -131,7 +131,7 @@ public class Tasca_6 {
             );
             final String formattedNow = now.format(formatter);
 
-            html.append("<div class=\"header\">\n" + "<h1>Els cinc tuts més recents del comptes seguits per l'usuari 'fib_asw'</h1>\n" + "<p>")
+            html.append("<div class=\"header\">\n<h1>Els cinc tuts més recents del comptes seguits per l'usuari 'fib_asw'</h1>\n<p>")
                     .append(formattedNow)
                     .append("</p>\n")
                     .append("</div>\n");
@@ -140,15 +140,10 @@ public class Tasca_6 {
             for (int i = 0; i < accounts.length(); i++) {
                 final JSONObject account = accounts.getJSONObject(i);
 
-                //  Extraiem camps del tut en JSON obtingut
+                //  Extraiem els camps del tut en JSON obtingut
                 final String id = account.getString("id");
                 final String displayName = account.optString("display_name", account.getString("username"));
-
-                String username = account.getString("acct");
-                if (!username.contains("@")) {
-                    username += "@mastodont.cat";
-                }
-
+                final String username = account.getString("acct");
                 final String avatar = account.getString("avatar");
                 final int followersCount = account.getInt("followers_count");
 
