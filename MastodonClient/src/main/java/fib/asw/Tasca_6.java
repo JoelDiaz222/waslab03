@@ -131,10 +131,10 @@ public class Tasca_6 {
             );
             final String formattedNow = now.format(formatter);
 
-            html.append("<div class=\"header\">\n" +
-                    "<h1>Els cinc tuts més recents del comptes seguits per l'usuari 'fib_asw'</h1>\n" +
-                    "<p>" + formattedNow + "</p>\n" +
-                    "</div>\n");
+            html.append("<div class=\"header\">\n" + "<h1>Els cinc tuts més recents del comptes seguits per l'usuari 'fib_asw'</h1>\n" + "<p>")
+                    .append(formattedNow)
+                    .append("</p>\n")
+                    .append("</div>\n");
 
             //  Processar cada compte seguit
             for (int i = 0; i < accounts.length(); i++) {
@@ -153,8 +153,16 @@ public class Tasca_6 {
                 final int followersCount = account.getInt("followers_count");
 
                 html.append("<div class='account'>\n");
-                html.append("<h2><img src='" + avatar + "' alt='Avatar' class='account-avatar'> " + displayName + " (@" + username + ")</h2>\n");
-                html.append("<p>Nombre de seguidors: " + followersCount + "</p>\n");
+                html.append("<h2><img src='")
+                        .append(avatar)
+                        .append("' alt='Avatar' class='account-avatar'> ")
+                        .append(displayName)
+                        .append(" (@")
+                        .append(username)
+                        .append(")</h2>\n");
+                html.append("<p>Nombre de seguidors: ")
+                        .append(followersCount)
+                        .append("</p>\n");
 
                 //  Obtenir els 5 tuts més recents del compte
                 final String uriStatuses = BASE_URL + "accounts/" + id + "/statuses?limit=5";
@@ -172,23 +180,33 @@ public class Tasca_6 {
                     String content = tut.getString("content");
                     final boolean isReblog = tut.has("reblog") && !tut.isNull("reblog");
 
-                    html.append("<div class='tut" + (isReblog ? " reblog" : "") + "'>\n");
+                    html.append("<div class='tut")
+                            .append(isReblog ? " reblog" : "")
+                            .append("'>\n");
 
                     final String createdAtRaw = tut.getString("created_at");
                     final OffsetDateTime dateTime = OffsetDateTime.parse(createdAtRaw);
                     final String formattedDate = dateTime.atZoneSameInstant(ZoneId.of("Europe/Madrid"))
                             .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
-                    html.append("<p class='timestamp'>" + (isReblog ? "🔁 Retut - " : "") + formattedDate + "</p>\n");
+                    html.append("<p class='timestamp'>")
+                            .append(isReblog ? "🔁 Retut - " : "")
+                            .append(formattedDate)
+                            .append("</p>\n");
 
                     if (isReblog) {
                         final JSONObject reblog = tut.getJSONObject("reblog");
                         final String originalAuthor = reblog.getJSONObject("account").getString("username");
-                        html.append("<p class='timestamp'><i>(Original: @" + originalAuthor + ")</i></p>\n");
+
+                        html.append("<p class='timestamp'><i>(Original: @")
+                                .append(originalAuthor)
+                                .append(")</i></p>\n");
                         content = reblog.getString("content");
                     }
 
-                    html.append("<div class='content'>" + content + "</div>\n");
+                    html.append("<div class='content'>")
+                            .append(content)
+                            .append("</div>\n");
                     html.append("</div>\n");
                 }
 
@@ -197,7 +215,7 @@ public class Tasca_6 {
 
             html.append("</body>\n</html>");
 
-            //  Escriure l'HTML a un fitxer
+            //  Escrivim l'HTML a un fitxer
             try (final FileWriter file = new FileWriter("darrers_tuts.html")) {
                 file.write(html.toString());
             }
