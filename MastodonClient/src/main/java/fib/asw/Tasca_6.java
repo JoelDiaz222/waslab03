@@ -189,20 +189,25 @@ public class Tasca_6 {
 
                     html.append("<p class='timestamp'>")
                             .append(isReblog ? "🔁 Retut - " : "")
-                            .append(formattedDate)
-                            .append("</p>\n");
+                            .append(formattedDate);
 
                     if (isReblog) {
                         final JSONObject reblog = tut.getJSONObject("reblog");
-                        final String originalAuthor = reblog.getJSONObject("account").getString("username");
+                        final String authorsUsername = reblog.getJSONObject("account").getString("username");
+                        final String authorAcct = reblog.getJSONObject("account").getString("acct");
 
-                        html.append("<p class='timestamp'><i>(Original: @")
-                                .append(originalAuthor)
-                                .append(")</i></p>\n");
+                        html.append(" (Original: ")
+                                .append(authorsUsername)
+                                .append(" (")
+                                .append(authorAcct)
+                                .append(")")
+                                .append(")</p>\n");
+
                         content = reblog.getString("content");
                     }
 
-                    html.append("<div class='content'>")
+                    html.append("</p>\n")
+                            .append("<div class='content'>")
                             .append(content)
                             .append("</div>\n");
                     html.append("</div>\n");
